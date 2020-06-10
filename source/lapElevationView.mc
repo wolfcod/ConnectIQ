@@ -10,7 +10,7 @@ class lapElevationView extends WatchUi.SimpleDataField  {
     function initialize() {
         SimpleDataField.initialize();
         //label = "Lap Elevation"; //Rez.Strings.FieldName;
-        label = "Lap Elevation";
+        label = WatchUi.loadResource(Rez.Strings.AppName);
         elevation = 0;
         prev_altitude = 0;
         record = false;
