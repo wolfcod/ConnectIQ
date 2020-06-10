@@ -9,6 +9,7 @@ class lapElevationView extends WatchUi.SimpleDataField  {
     // Set the label of the data field here.
     function initialize() {
         SimpleDataField.initialize();
+        //label = "Lap Elevation"; //Rez.Strings.FieldName;
         label = "Lap Elevation";
         elevation = 0;
         prev_altitude = 0;
@@ -29,7 +30,13 @@ class lapElevationView extends WatchUi.SimpleDataField  {
 	        }
 		}
 		
-        return elevation;
+		if (elevation < 10.0 && elevation > -10.0) {
+        	return elevation.format("%.2f");
+        } else if (elevation >= 100 && elevation > -100) {
+        	return elevation.toNumber();
+        } 
+        
+        return elevation.format("%.1f");
     }
     
     // Get the field layout
