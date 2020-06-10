@@ -4,6 +4,7 @@ class lapElevationView extends WatchUi.SimpleDataField  {
 
 	hidden var elevation;
 	hidden var prev_altitude;
+	hidden var record;
 	
     // Set the label of the data field here.
     function initialize() {
@@ -11,6 +12,7 @@ class lapElevationView extends WatchUi.SimpleDataField  {
         label = "Lap Elevation";
         elevation = 0;
         prev_altitude = 0;
+        record = false;
     }
 
     // The given info object contains all the current workout
@@ -18,14 +20,15 @@ class lapElevationView extends WatchUi.SimpleDataField  {
     // Note that compute() and onUpdate() are asynchronous, and there is no
     // guarantee that compute() will be called before onUpdate().
     function compute(info) {
-        // See Activity.Info in the documentation for available information.
-        if (prev_altitude != 0) {
-        	elevation += (info.altitude - prev_altitude);
-        	prev_altitude = info.altitude;
-        } else {
-        	prev_altitude = info.altitude;
-        }
-
+        if (record == true) {
+	        if (prev_altitude != 0) {
+	        	elevation += (info.altitude - prev_altitude);
+	        	prev_altitude = info.altitude;
+	        } else {
+	        	prev_altitude = info.altitude;
+	        }
+		}
+		
         return elevation;
     }
     
@@ -34,9 +37,37 @@ class lapElevationView extends WatchUi.SimpleDataField  {
     	View.setLayout(Rez.Layouts.MainLayout(dc));
     }*/
     
+    /* A lap event occurred */
     function onTimerLap() {
     	elevation = 0;
     	prev_altitude = Activity.getActivityInfo().altitude;
+    }
+    
+    /** the activity is on pause! */
+    function onTimerPause() {
+    	record = false;
+    }
+    
+    /** The current activity has ended. */
+    function onTimerReset() {
+    	record = false;
+    	prev_altitude = 0;
+    	elevation = 0;
+    }
+    
+    /** The activity time has resumed. */
+    function onTimerResume() {
+    	record = true;
+    }
+    
+    /** The activity timer has started. */
+    function onTimerStart() {
+    	record = true;
+    }
+    
+    /** The activity timer has stopped. */
+    function onTimerStop() {
+    	record = false;
     }
     
     /*function onUpdate(dc) {
