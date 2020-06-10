@@ -18,7 +18,7 @@ class lapElevationApp extends Application.AppBase {
     function getInitialView() {
     	var elevationView = new lapElevationView();
     	//var distanceView = new lapDistanceView();
-    	
+    	//var v = new lapView();
         return [ elevationView ];
     }
 
